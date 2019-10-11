@@ -1,0 +1,22 @@
+{
+    "name": "babeuloula/phpcs",
+    "description": "My own PHP code sniffs",
+    "keywords": ["phpcs", "CodeSniffer", "Standard", "BaBeuloula"],
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "BaBeuloula",
+            "email": "info@babeuloula.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "BaBeuloula\\PhpCS\\": "BaBeuloula/"
+        }
+    },
+    "require": {
+        "php": "^7.1",
+        "squizlabs/php_codesniffer": "^3.5"
+    }
+}
