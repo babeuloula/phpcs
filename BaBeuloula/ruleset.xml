@@ -19,6 +19,13 @@
                 <element key="delete" value="unset"/>
                 <element key="print" value="echo"/>
                 <element key="create_function" value="null"/>
+                <element key="error_log" value="null" />
+                <element key="print_r" value="null" />
+                <element key="var_dump" value="null" />
+                <element key="dump" value="null" />
+                <element key="dd" value="null" />
+                <element key="die" value="null" />
+                <element key="exit" value="null" />
             </property>
         </properties>
     </rule>
@@ -45,19 +52,6 @@
     <rule ref="Squiz.Operators.IncrementDecrementUsage" />
     <rule ref="Squiz.PHP.DisallowBooleanStatement" />
     <rule ref="Squiz.PHP.DisallowMultipleAssignments" />
-    <rule ref="Squiz.PHP.DiscouragedFunctions">
-        <properties>
-            <property name="forbiddenFunctions" type="array" extend="true">
-                <element key="error_log" value="null" />
-                <element key="print_r" value="null" />
-                <element key="var_dump" value="null" />
-                <element key="dump" value="null" />
-                <element key="dd" value="null" />
-                <element key="die" value="null" />
-                <element key="exit" value="null" />
-            </property>
-        </properties>
-    </rule>
     <rule ref="Squiz.PHP.NonExecutableCode" />
     <rule ref="Squiz.Scope.StaticThisUsage" />
 

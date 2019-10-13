@@ -22,25 +22,16 @@ use PHP_CodeSniffer\{
  *     Request,
  *     Response
  * };
- * Call addThreeLevelsPrefix() to force this namespace to be regrouped at 3rd level
  */
 class GroupUsesSniff implements Sniff
 {
     /** @var string[] */
-    protected static $thirdLevelPrefixs = [];
-
-    public static function addThirdLevelPrefix(string $prefix): void
-    {
-        static::$thirdLevelPrefixs[] = rtrim($prefix, '\\') . '\\';
-    }
-
-    public static function addSymfonyPrefixes(): void
-    {
-        static::addThirdLevelPrefix('Symfony\\Component');
-        static::addThirdLevelPrefix('Symfony\\Bundle');
-        static::addThirdLevelPrefix('Sensio\\Bundle');
-        static::addThirdLevelPrefix('Doctrine\\Common');
-    }
+    public $thirdLevelPrefixs = [
+        'Symfony\\Component\\',
+        'Symfony\\Bundle\\',
+        'Sensio\\Bundle\\',
+        'Doctrine\\Common\\',
+    ];
 
     /** @var string[] */
     protected $uses = [];
@@ -48,54 +39,73 @@ class GroupUsesSniff implements Sniff
     /** @return mixed[] */
     public function register(): array
     {
-        return [T_USE, T_OPEN_USE_GROUP];
+        return [T_USE, T_OPEN_USE_GROUP, T_CLOSE_USE_GROUP];
     }
 
     /** @param int $stackPtr */
     public function process(File $phpcsFile, $stackPtr): void
     {
-        if ('T_USE' === $phpcsFile->getTokens()[$stackPtr]['type']) {
-            $useGroupPrefix = $this->getUseGroupPrefix($phpcsFile, $stackPtr);
+        switch ($phpcsFile->getTokens()[$stackPtr]['type']) {
+            case 'T_USE':
+                $useGroupPrefix = $this->getUseGroupPrefix($phpcsFile, $stackPtr);
 
-            if (true === \is_string($useGroupPrefix)) {
-                $this->validateUseGroupPrefixName($phpcsFile, $stackPtr, $useGroupPrefix);
-            } else {
-                $currentUse = $this->getCurrentUse($phpcsFile, $stackPtr);
+                if (true === \is_string($useGroupPrefix)) {
+                    $this->validateUseGroupPrefixName($phpcsFile, $stackPtr, $useGroupPrefix);
+                } else {
+                    $currentUse = $this->getCurrentUse($phpcsFile, $stackPtr);
 
-                if (true === \is_string($currentUse)) {
-                    $this->validateUse($phpcsFile, $stackPtr, $currentUse);
+                    if (true === \is_string($currentUse)) {
+                        $this->validateUse($phpcsFile, $stackPtr, $currentUse);
+                    }
                 }
-            }
-        } else {
-            $comaPtr = $phpcsFile->findNext(
-                [T_COMMA],
-                $stackPtr,
-                $phpcsFile->findNext([T_CLOSE_USE_GROUP], ++$stackPtr)
-            );
-            $errorLines = [];
+                break;
 
-            while (true === \is_int($comaPtr)) {
-                $nextToken = $phpcsFile->getTokens()[++$comaPtr];
-
-                if ('T_WHITESPACE' === $nextToken['type']
-                    && false === \strpos($nextToken['content'], "\n")
-                    && false === \in_array($nextToken['line'], $errorLines)
-                ) {
-                    $phpcsFile->addError(
-                        'Only one use per line allowed.',
-                        $comaPtr + 1,
-                        'OneUsePerLine'
-                    );
-
-                    $errorLines[] = $nextToken['line'];
-                }
-
+            case 'T_OPEN_USE_GROUP':
                 $comaPtr = $phpcsFile->findNext(
                     [T_COMMA],
-                    ++$comaPtr,
-                    $phpcsFile->findNext([T_CLOSE_USE_GROUP], $comaPtr)
+                    $stackPtr,
+                    $phpcsFile->findNext([T_CLOSE_USE_GROUP], ++$stackPtr)
                 );
-            }
+                $errorLines = [];
+
+                while (true === \is_int($comaPtr)) {
+                    $nextToken = $phpcsFile->getTokens()[++$comaPtr];
+
+                    if ('T_WHITESPACE' === $nextToken['type']
+                        && false === \strpos($nextToken['content'], "\n")
+                        && false === \in_array($nextToken['line'], $errorLines)
+                    ) {
+                        $phpcsFile->addError(
+                            'Only one use per line allowed.',
+                            ++$comaPtr,
+                            'OneUsePerLine'
+                        );
+
+                        $errorLines[] = $nextToken['line'];
+                    }
+
+                    $comaPtr = $phpcsFile->findNext(
+                        [T_COMMA],
+                        ++$comaPtr,
+                        $phpcsFile->findNext([T_CLOSE_USE_GROUP], $comaPtr)
+                    );
+                }
+                break;
+
+            case 'T_CLOSE_USE_GROUP':
+                $previousPtr = $phpcsFile->findPrevious(
+                    [T_STRING],
+                    $stackPtr
+                );
+
+                if ($phpcsFile->getTokens()[$previousPtr]['line'] === $phpcsFile->getTokens()[$stackPtr]['line']) {
+                    $phpcsFile->addError(
+                        'The close braket must be on the next line.',
+                        ++$stackPtr,
+                        'CloseUseGroupNextLine'
+                    );
+                }
+                break;
         }
     }
 
@@ -144,13 +154,13 @@ class GroupUsesSniff implements Sniff
     {
         $is3parts = false;
 
-        foreach (static::$thirdLevelPrefixs as $usePrefix3part) {
+        foreach ($this->thirdLevelPrefixs as $usePrefix3part) {
             if (\substr($usePrefix3part, 0, \strlen($prefix)) === $prefix) {
                 $phpcsFile->addError(
                     'Use group "'
                     . $prefix
                     . '" is invalid, you must group at 3rd level for '
-                    . implode(', ', static::$thirdLevelPrefixs),
+                    . implode(', ', $this->thirdLevelPrefixs),
                     $stackPtr,
                     'GroupAt3rdLevel'
                 );
@@ -189,7 +199,7 @@ class GroupUsesSniff implements Sniff
         foreach ($this->uses[$phpcsFile->getFilename()] ?? [] as $use) {
             $prefix = null;
 
-            foreach (static::$thirdLevelPrefixs as $usePrefix3part) {
+            foreach ($this->thirdLevelPrefixs as $usePrefix3part) {
                 if (\substr($use, 0, \strlen($usePrefix3part)) === $usePrefix3part) {
                     $prefix = \substr($use, 0, \strpos($use, '\\', \strlen($usePrefix3part)) + 1);
                     break;
@@ -199,10 +209,8 @@ class GroupUsesSniff implements Sniff
             if (false === \is_string($prefix)) {
                 $useParts = \explode('\\', $use);
 
-                if (3 <= \count($useParts)) {
-                    $prefix = \implode('\\', \array_slice($useParts, 0, 2)) . '\\';
-                } else {
-                    $prefix = null;
+                if (2 < \count($useParts)) {
+                    $prefix = \implode('\\', \array_slice($useParts, 0, \count($useParts) - 1)) . '\\';
                 }
             }
 
