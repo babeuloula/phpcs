@@ -13,8 +13,8 @@
         <properties>
             <property name="forbiddenFunctions" type="array" extend="true">
                 <element key="sizeof" value="count" />
-                <element key="isset" value="null" />
-                <element key="empty" value="null" />
+                <element key="isset" value="array_key_exists" />
+                <element key="empty" value="array_key_exists" />
                 <element key="split" value="explode" />
                 <element key="delete" value="unset"/>
                 <element key="print" value="echo"/>
