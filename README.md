@@ -14,3 +14,12 @@ composer require --dev babeuloula/phpcs
     <rule ref="vendor/babeuloula/phpcs/BaBeuloula/ruleset.xml"/>
 </ruleset>
 ```
+
+## Coding standards
+
+| Sniff |
+|-------|
+| [BaBeuloula.CodeAnalysis.Backslash](https://github.com/babeuloula/phpcs/blob/master/BaBeuloula/Sniffs/CodeAnalysis/BackslashSniff.php) |
+| [BaBeuloula.CodeAnalysis.StrictTypes](https://github.com/babeuloula/phpcs/blob/master/BaBeuloula/Sniffs/CodeAnalysis/StrictTypesSniff.php) |
+| [BaBeuloula.Uses.GroupUses](https://github.com/babeuloula/phpcs/blob/master/BaBeuloula/Sniffs/Uses/GroupUsesSniff.php) |
+
