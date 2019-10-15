@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @author BaBeuloula
+ */
+
 declare(strict_types=1);
 
 namespace BaBeuloula\PhpCS\Sniffs\CodeAnalysis;
@@ -12,7 +16,8 @@ use PHP_CodeSniffer\{
 /**
  * Throw a warning if root-namespace functions does not have backslash before
  *
- * Ex: array_keys => \array_keys
+ * Ex: array_key_exists => \array_key_exists
+ * @see https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php#L358-L398
  */
 class BackslashSniff implements Sniff
 {
@@ -70,7 +75,7 @@ class BackslashSniff implements Sniff
     {
         $functionName = $phpcsFile->getTokens()[$stackPtr]['content'];
 
-        if (false === \in_array(\strtolower($functionName), $this->functions, true)) {
+        if (false === \in_array(strtolower($functionName), $this->functions, true)) {
             return;
         }
 

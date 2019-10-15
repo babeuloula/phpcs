@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @author BaBeuloula
+ */
+
 declare(strict_types=1);
 
 namespace BaBeuloula\PhpCS\Sniffs\CodeAnalysis;
