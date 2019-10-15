@@ -73,9 +73,19 @@ class BackslashSniff implements Sniff
 
     public function process(File $phpcsFile, $stackPtr)
     {
-        $functionName = $phpcsFile->getTokens()[$stackPtr]['content'];
+        $current = $phpcsFile->getTokens()[$stackPtr];
+        $currentLine = $current['line'];
+        $functionName = $current['content'];
 
         if (false === \in_array(strtolower($functionName), $this->functions, true)) {
+            return;
+        }
+
+        $usePtr = $phpcsFile->findPrevious([T_USE], $stackPtr);
+        $useLine = $phpcsFile->getTokens()[$usePtr]['line'];
+
+        // If the current line is a use, we don't need to check.
+        if ($useLine === $currentLine) {
             return;
         }
 
