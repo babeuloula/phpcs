@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @author BaBeuloula
+ *
+ * Fork of https://github.com/steevanb/php-code-sniffs
+ */
+
 declare(strict_types=1);
 
 namespace BaBeuloula\PhpCS\Sniffs\Uses;
@@ -10,8 +16,6 @@ use PHP_CodeSniffer\{
 };
 
 /**
- * Fork of https://github.com/steevanb/php-code-sniffs
- *
  * Group use on 1st, 2nd or 3rd level
  * Example:
  * use App\{
@@ -133,18 +137,18 @@ class GroupUsesSniff implements Sniff
     {
         $return = null;
         $nextStackPtr = $stackPtr;
-        $urrentUseString = null;
+        $currentUseString = null;
 
         do {
             ++$nextStackPtr;
             $currentToken = $phpcsFile->getTokens()[$nextStackPtr];
 
             if (true === \is_array($currentToken) && T_OPEN_USE_GROUP === $currentToken['code']) {
-                $return = $urrentUseString;
+                $return = $currentUseString;
                 break;
             }
 
-            $urrentUseString .= $currentToken['content'];
+            $currentUseString .= $currentToken['content'];
         } while (T_SEMICOLON !== $currentToken['code']);
 
         return (true === \is_string($return)) ? \trim(\rtrim($return, '\\')) : null;
