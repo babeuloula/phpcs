@@ -99,11 +99,17 @@ class BackslashSniff implements Sniff
         );
 
         if (false === $previousPtr) {
-            $phpcsFile->addWarning(
+            $isFixable = $phpcsFile->addFixableWarning(
                 "For better performance, use \\$functionName instead of $functionName.",
                 $stackPtr,
                 'MissingBackSlash'
             );
+
+            if (true === $isFixable) {
+                $phpcsFile->fixer->beginChangeset();
+                $phpcsFile->fixer->replaceToken($stackPtr, '\\' . $functionName);
+                $phpcsFile->fixer->endChangeset();
+            }
         }
     }
 }
