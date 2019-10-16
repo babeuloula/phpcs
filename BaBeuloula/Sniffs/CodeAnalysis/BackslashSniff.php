@@ -66,6 +66,15 @@ class BackslashSniff implements Sniff
         'is_callable',
     ];
 
+    /** @var string[] */
+    protected $excludeType = [
+        'T_NS_SEPARATOR',
+        'T_OBJECT_OPERATOR',
+        'T_OPEN_USE_GROUP',
+        'T_USE',
+        'T_DOUBLE_COLON',
+    ];
+
     public function register()
     {
         return [T_STRING];
@@ -74,18 +83,28 @@ class BackslashSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $current = $phpcsFile->getTokens()[$stackPtr];
-        $currentLine = $current['line'];
         $functionName = $current['content'];
 
-        if (false === \in_array(strtolower($functionName), $this->functions, true)) {
-            return;
+        $previousTYpe = $phpcsFile->getTokens()[--$stackPtr]['type'];
+
+        $prev = $phpcsFile->findPrevious([T_OPEN_CURLY_BRACKET], $stackPtr);
+        $findPreviousPtr = $phpcsFile->findPrevious(
+            [T_USE, T_OPEN_USE_GROUP],
+            $stackPtr,
+            (true === \is_int($prev)) ? $prev : null
+        );
+        $findPreviousType = "";
+
+        if (true === \is_int($findPreviousPtr)) {
+            $findPreviousType = $phpcsFile->getTokens()[$findPreviousPtr]['type'];
         }
 
-        $usePtr = $phpcsFile->findPrevious([T_USE], $stackPtr);
-        $useLine = $phpcsFile->getTokens()[$usePtr]['line'];
-
-        // If the current line is a use, we don't need to check.
-        if ($useLine === $currentLine) {
+        // If the function name is not on the functions array
+        // Or if the previous token is on the excluded list
+        if (false === \in_array(strtolower($functionName), $this->functions, true)
+            || true === \in_array($previousTYpe, $this->excludeType, true)
+            || true === \in_array($findPreviousType, $this->excludeType, true)
+        ) {
             return;
         }
 
