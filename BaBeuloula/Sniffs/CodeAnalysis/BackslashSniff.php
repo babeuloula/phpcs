@@ -82,6 +82,7 @@ class BackslashSniff implements Sniff
 
     public function process(File $phpcsFile, $stackPtr)
     {
+        $originalPtr = $stackPtr;
         $current = $phpcsFile->getTokens()[$stackPtr];
         $functionName = $current['content'];
 
@@ -120,13 +121,13 @@ class BackslashSniff implements Sniff
         if (false === $previousPtr) {
             $isFixable = $phpcsFile->addFixableWarning(
                 "For better performance, use \\$functionName instead of $functionName.",
-                $stackPtr,
+                $originalPtr,
                 'MissingBackSlash'
             );
 
             if (true === $isFixable) {
                 $phpcsFile->fixer->beginChangeset();
-                $phpcsFile->fixer->replaceToken($stackPtr, '\\' . $functionName);
+                $phpcsFile->fixer->replaceToken($originalPtr, '\\' . $functionName);
                 $phpcsFile->fixer->endChangeset();
             }
         }
