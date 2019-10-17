@@ -71,6 +71,7 @@ class BackslashSniff implements Sniff
         'T_NS_SEPARATOR',
         'T_OBJECT_OPERATOR',
         'T_OPEN_USE_GROUP',
+        'T_FUNCTION',
         'T_USE',
         'T_DOUBLE_COLON',
     ];
@@ -89,7 +90,7 @@ class BackslashSniff implements Sniff
 
         $prev = $phpcsFile->findPrevious([T_OPEN_CURLY_BRACKET], $stackPtr);
         $findPreviousPtr = $phpcsFile->findPrevious(
-            [T_USE, T_OPEN_USE_GROUP],
+            [T_USE, T_OPEN_USE_GROUP, T_FUNCTION],
             $stackPtr,
             (true === \is_int($prev)) ? $prev : null
         );
