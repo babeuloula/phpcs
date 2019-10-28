@@ -85,7 +85,7 @@ class BackslashSniff implements Sniff
         $current = $phpcsFile->getTokens()[$stackPtr];
         $functionName = $current['content'];
 
-        $previousTYpe = $phpcsFile->getTokens()[--$stackPtr]['type'];
+        $previousType = $phpcsFile->getTokens()[--$stackPtr]['type'];
 
         $prev = $phpcsFile->findPrevious([T_OPEN_CURLY_BRACKET], $stackPtr);
         $findPreviousPtr = $phpcsFile->findPrevious(
@@ -102,8 +102,9 @@ class BackslashSniff implements Sniff
         // If the function name is not on the functions array
         // Or if the previous token is on the excluded list
         if (false === \in_array(strtolower($functionName), $this->functions, true)
-            || true === \in_array($previousTYpe, $this->excludeType, true)
+            || true === \in_array($previousType, $this->excludeType, true)
             || true === \in_array($findPreviousType, $this->excludeType, true)
+            || 'T_FUNCTION' === $phpcsFile->getTokens()[--$stackPtr]['type']
         ) {
             return;
         }
