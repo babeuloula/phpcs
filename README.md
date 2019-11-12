@@ -22,4 +22,5 @@ composer require --dev babeuloula/phpcs
 | [BaBeuloula.CodeAnalysis.Backslash](https://github.com/babeuloula/phpcs/blob/master/BaBeuloula/Sniffs/CodeAnalysis/BackslashSniff.php) |
 | [BaBeuloula.CodeAnalysis.StrictTypes](https://github.com/babeuloula/phpcs/blob/master/BaBeuloula/Sniffs/CodeAnalysis/StrictTypesSniff.php) |
 | [BaBeuloula.Uses.GroupUses](https://github.com/babeuloula/phpcs/blob/master/BaBeuloula/Sniffs/Uses/GroupUsesSniff.php) |
+| [BaBeuloula.Functions.FunctionCallSignature](https://github.com/babeuloula/phpcs/blob/master/BaBeuloula/Sniffs/Functions/FunctionCallSignatureSniff.php) |
 
