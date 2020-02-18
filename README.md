@@ -1,17 +1,17 @@
-# BaBeuloula PHP Code Sniffs
+# Wizaplace PHP Code Sniffs
 
-My own PHP code sniffs
+Wizaplace PHP code sniffs
 
 ## Installation
 
 ```bash
-composer require --dev babeuloula/phpcs
+composer require --dev wizaplace/phpcs
 ```
 
 ```xml
 <?xml version="1.0"?>
 <ruleset>
-    <rule ref="vendor/babeuloula/phpcs/BaBeuloula/ruleset.xml"/>
+    <rule ref="vendor/wizaplace/phpcs/BaBeuloula/ruleset.xml"/>
 </ruleset>
 ```
 
