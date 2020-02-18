@@ -1,7 +1,7 @@
 {
-    "name": "babeuloula/phpcs",
+    "name": "wizaplace/phpcs",
     "description": "My own PHP code sniffs",
-    "keywords": ["phpcs", "CodeSniffer", "Standard", "BaBeuloula"],
+    "keywords": ["phpcs", "CodeSniffer", "wizaplace", "Standard", "BaBeuloula"],
     "license": "MIT",
     "type": "library",
     "authors": [
