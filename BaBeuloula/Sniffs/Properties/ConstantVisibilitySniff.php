@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @fork https://github.com/squizlabs/PHP_CodeSniffer/blob/master/src/Standards/PSR12/Sniffs/Properties/ConstantVisibilitySniff.php
@@ -9,7 +10,7 @@
  * @copyright 2006-2019 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
- 
+
 declare(strict_types=1);
 
 namespace BaBeuloula\PhpCS\Sniffs\Properties;
@@ -30,7 +31,6 @@ class ConstantVisibilitySniff implements Sniff
     public function register()
     {
         return [T_CONST];
-
     }
 
 
@@ -66,6 +66,5 @@ class ConstantVisibilitySniff implements Sniff
             $phpcsFile->fixer->replaceToken($stackPtr, 'public const');
             $phpcsFile->fixer->endChangeset();
         }
-
     }
 }
