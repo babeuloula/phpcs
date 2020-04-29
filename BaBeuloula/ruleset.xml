@@ -5,6 +5,9 @@
     <rule ref="PSR12">
         <!-- Buggy sniff -->
         <exclude name="PSR12.ControlStructures.ControlStructureSpacing" />
+        
+        <!-- Use my own sniff -->
+        <exclude name="PSR12.Properties.ConstantVisibility" />
     </rule>
 
     <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter" />
