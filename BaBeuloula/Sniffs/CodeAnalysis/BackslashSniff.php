@@ -66,6 +66,10 @@ class BackslashSniff implements Sniff
         'is_callable',
     ];
 
+    public $excludeFunctions = [
+        'Assert',
+    ];
+
     /** @var string[] */
     protected $excludeType = [
         'T_NS_SEPARATOR',
@@ -103,6 +107,7 @@ class BackslashSniff implements Sniff
         // If the function name is not on the functions array
         // Or if the previous token is on the excluded list
         if (false === \in_array(strtolower($functionName), $this->functions, true)
+            || true === \in_array($functionName, $this->excludeFunctions, true)
             || true === \in_array($previousType, $this->excludeType, true)
             || true === \in_array($findPreviousType, $this->excludeType, true)
             || 'T_FUNCTION' === $phpcsFile->getTokens()[--$stackPtr]['type']
