@@ -26,7 +26,7 @@ commands:
         description: "Restore vendor folder from CircleCI cache"
         steps:
             - restore_cache:
-                key: composer-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
+                key: composer-{{ checksum "composer.json" }}
 
     store-composer-cache:
         description: "Store vendor folder in CircleCI cache"
@@ -35,7 +35,7 @@ commands:
             - restore-composer-cache
             - composer-install
             - save_cache:
-                key: composer-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
+                key: composer-{{ checksum "composer.json" }}
                 paths:
                   - ./vendor
             - persist_to_workspace:
