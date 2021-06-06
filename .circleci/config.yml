@@ -50,19 +50,67 @@ commands:
                 command: make phpcs
 
 executors:
-    php:
+    php7_1:
         docker:
-            - image: php:7.1-cli-alpine3.10
+            - image: php:7.1-cli-alpine
+        working_directory: ~/repository
+
+    php7_2:
+        docker:
+            - image: php:7.2-cli-alpine
+        working_directory: ~/repository
+
+    php7_3:
+        docker:
+            - image: php:7.3-cli-alpine
+        working_directory: ~/repository
+
+    php7_4:
+        docker:
+            - image: php:7.4-cli-alpine
+        working_directory: ~/repository
+
+    php8_0:
+        docker:
+            - image: php:8.0-cli-alpine
         working_directory: ~/repository
 
 jobs:
     composer:
-        executor: php
+        executor: php7_1
         steps:
             - store-composer-cache
 
-    phpcs:
-        executor: php
+    phpcs_7_1:
+        executor: php7_1
+        steps:
+            - checkout-alpine
+            - restore-composer-cache
+            - phpcs
+
+    phpcs_7_2:
+        executor: php7_2
+        steps:
+            - checkout-alpine
+            - restore-composer-cache
+            - phpcs
+
+    phpcs_7_3:
+        executor: php7_3
+        steps:
+            - checkout-alpine
+            - restore-composer-cache
+            - phpcs
+
+    phpcs_7_4:
+        executor: php7_4
+        steps:
+            - checkout-alpine
+            - restore-composer-cache
+            - phpcs
+
+    phpcs_8_0:
+        executor: php8_0
         steps:
             - checkout-alpine
             - restore-composer-cache
@@ -73,6 +121,18 @@ workflows:
     Code quality:
         jobs:
             - composer
-            - phpcs:
+            - phpcs_7_1:
+                requires:
+                    - composer
+            - phpcs_7_2:
+                requires:
+                    - composer
+            - phpcs_7_3:
+                requires:
+                    - composer
+            - phpcs_7_4:
+                requires:
+                    - composer
+            - phpcs_8_0:
                 requires:
                     - composer
