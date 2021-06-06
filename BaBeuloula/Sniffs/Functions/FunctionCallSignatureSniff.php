@@ -144,7 +144,7 @@ class FunctionCallSignatureSniff implements Sniff
         }
 
         // Check if this is a single line or multi-line function call.
-        if ($this->isMultiLineCall($openBracket, $tokens) === true) {
+        if (true === $this->isMultiLineCall($openBracket, $tokens)) {
             $this->processMultiLineCall($phpcsFile, $stackPtr, $openBracket, $tokens);
         } else {
             $this->processSingleLineCall($phpcsFile, $stackPtr, $openBracket, $tokens);
@@ -226,7 +226,7 @@ class FunctionCallSignatureSniff implements Sniff
 
                 if (true === $fix) {
                     $padding = str_repeat(' ', $requiredSpacesAfterOpen);
-                    if ($spaceAfterOpen === 0) {
+                    if (0 === $spaceAfterOpen) {
                         $phpcsFile->fixer->addContent($openBracket, $padding);
                     } else {
                         $phpcsFile->fixer->replaceToken(($openBracket + 1), $padding);
@@ -282,8 +282,8 @@ class FunctionCallSignatureSniff implements Sniff
                     $prev = ($closer - 1);
 
                     while (true === \array_key_exists($tokens[$prev]['code'], Tokens::$emptyTokens)) {
-                        if (($tokens[$prev]['code'] === T_COMMENT)
-                            && (strpos($tokens[$prev]['content'], '*/') !== false)
+                        if ((T_COMMENT === $tokens[$prev]['code'])
+                            && (false !== strpos($tokens[$prev]['content'], '*/'))
                         ) {
                             break;
                         }
@@ -328,8 +328,8 @@ class FunctionCallSignatureSniff implements Sniff
         // indent the arguments.
         $first = $phpcsFile->findFirstOnLine(T_WHITESPACE, $stackPtr, true);
 
-        if ($tokens[$first]['code'] === T_CONSTANT_ENCAPSED_STRING
-            && $tokens[($first - 1)]['code'] === T_CONSTANT_ENCAPSED_STRING
+        if (T_CONSTANT_ENCAPSED_STRING === $tokens[$first]['code']
+            && T_CONSTANT_ENCAPSED_STRING === $tokens[($first - 1)]['code']
         ) {
             // We are in a multi-line string, so find the start and use
             // the indent from there.
@@ -338,11 +338,11 @@ class FunctionCallSignatureSniff implements Sniff
         }
 
         $foundFunctionIndent = 0;
-        if ($first !== false) {
-            if ($tokens[$first]['code'] === T_INLINE_HTML) {
+        if (false !== $first) {
+            if (T_INLINE_HTML === $tokens[$first]['code']) {
                 $trimmed = ltrim($tokens[$first]['content']);
 
-                if ($trimmed === '') {
+                if ('' === $trimmed) {
                     $foundFunctionIndent = \strlen($tokens[$first]['content']);
                 } else {
                     $foundFunctionIndent = (\strlen($tokens[$first]['content']) - \strlen($trimmed));
@@ -448,7 +448,7 @@ class FunctionCallSignatureSniff implements Sniff
                 }
 
                 // Ignore inline HTML.
-                if ($tokens[$i]['code'] === T_INLINE_HTML) {
+                if (T_INLINE_HTML === $tokens[$i]['code']) {
                     continue;
                 }
 
@@ -456,13 +456,13 @@ class FunctionCallSignatureSniff implements Sniff
                     // We changed lines, so this should be a whitespace indent token, but first make
                     // sure it isn't a blank line because we don't need to check indent unless there
                     // is actually some code to indent.
-                    if ($tokens[$i]['code'] === T_WHITESPACE) {
+                    if (T_WHITESPACE === $tokens[$i]['code']) {
                         $nextCode = $phpcsFile->findNext(T_WHITESPACE, ($i + 1), ($closeBracket + 1), true);
                         if ($tokens[$nextCode]['line'] !== $lastLine) {
-                            if ($inArg === false) {
+                            if (false === $inArg) {
                                 $error = 'Empty lines are not allowed in multi-line function calls';
                                 $fix   = $phpcsFile->addFixableError($error, $i, 'EmptyLine');
-                                if ($fix === true) {
+                                if (true === $fix) {
                                     $phpcsFile->fixer->replaceToken($i, '');
                                 }
                             }
@@ -490,7 +490,7 @@ class FunctionCallSignatureSniff implements Sniff
                         if (T_COMMENT === $tokens[$i]['code'] && T_COMMENT === $tokens[($i - 1)]['code']) {
                             $trimmedLength = \strlen(ltrim($tokens[$i]['content']));
 
-                            if ($trimmedLength === 0) {
+                            if (0 === $trimmedLength) {
                                 // This is a blank comment line, so indenting it is
                                 // pointless.
                                 continue;
@@ -504,7 +504,7 @@ class FunctionCallSignatureSniff implements Sniff
                         $foundIndent = $tokens[$i]['length'];
                     }
 
-                    if ($foundIndent < $expectedIndent || ($inArg === false && $expectedIndent !== $foundIndent)) {
+                    if ($foundIndent < $expectedIndent || (false === $inArg && $expectedIndent !== $foundIndent)) {
                         $error = 'Multi-line function call not indented correctly; expected %s spaces but found %s';
                         $data = [
                             $expectedIndent,
@@ -555,7 +555,7 @@ class FunctionCallSignatureSniff implements Sniff
                             $phpcsFile->fixer->beginChangeset();
 
                             for ($x = ($next - 1); $x > $i; $x--) {
-                                if ($tokens[$x]['code'] !== T_WHITESPACE) {
+                                if (T_WHITESPACE !== $tokens[$x]['code']) {
                                     break;
                                 }
 
