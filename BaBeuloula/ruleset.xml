@@ -5,7 +5,7 @@
     <rule ref="PSR12">
         <!-- Buggy sniff -->
         <exclude name="PSR12.ControlStructures.ControlStructureSpacing" />
-        
+
         <!-- Use my own sniff -->
         <exclude name="PSR12.Properties.ConstantVisibility" />
     </rule>
@@ -85,7 +85,11 @@
                 "/>
                 <element value="
                     @var,
+                "/>
+                <element value="
                     @param,
+                "/>
+                <element value="
                     @return,
                 "/>
             </property>

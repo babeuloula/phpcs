@@ -81,6 +81,7 @@ class FunctionCallSignatureSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
+     *
      * @return void
      */
     public function process(File $phpcsFile, $stackPtr)
@@ -158,6 +159,7 @@ class FunctionCallSignatureSniff implements Sniff
      *                                                 in the stack passed in $tokens.
      * @param array                       $tokens      The stack of tokens that make up
      *                                                 the file.
+     *
      * @return bool
      */
     public function isMultiLineCall($openBracket, $tokens)
@@ -178,6 +180,7 @@ class FunctionCallSignatureSniff implements Sniff
      *                                                 in the stack passed in $tokens.
      * @param array                       $tokens      The stack of tokens that make up
      *                                                 the file.
+     *
      * @return void
      */
     public function processSingleLineCall(File $phpcsFile, $stackPtr, $openBracket, $tokens)
@@ -315,6 +318,7 @@ class FunctionCallSignatureSniff implements Sniff
      *                                                 in the stack passed in $tokens.
      * @param array                       $tokens      The stack of tokens that make up
      *                                                 the file.
+     *
      * @return void
      */
     public function processMultiLineCall(File $phpcsFile, $stackPtr, $openBracket, $tokens)

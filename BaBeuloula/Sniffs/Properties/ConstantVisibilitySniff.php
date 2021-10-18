@@ -38,6 +38,7 @@ class ConstantVisibilitySniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
+     *
      * @return void
      */
     public function process(File $phpcsFile, $stackPtr)
