@@ -1,11 +1,9 @@
 <?php
 
 /**
- *
  * @fork https://github.com/squizlabs/PHP_CodeSniffer/blob/master/src/Standards/PSR12/Sniffs/Properties/ConstantVisibilitySniff.php
  *
  * Verifies that all class constants have their visibility set.
- *
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006-2019 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence

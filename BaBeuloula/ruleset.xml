@@ -5,7 +5,7 @@
     <rule ref="PSR12">
         <!-- Buggy sniff -->
         <exclude name="PSR12.ControlStructures.ControlStructureSpacing" />
-        
+
         <!-- Use my own sniff -->
         <exclude name="PSR12.Properties.ConstantVisibility" />
     </rule>
@@ -36,6 +36,10 @@
     <rule ref="Generic.Files.LineLength" />
     <rule ref="Generic.Formatting.SpaceAfterCast" />
     <rule ref="Generic.NamingConventions.UpperCaseConstantName" />
+    <rule ref="Generic.PHP.NoSilencedErrors" />
+    <rule ref="Generic.Commenting.Fixme" />
+    <rule ref="Generic.VersionControl.GitMergeConflict" />
+    <rule ref="Generic.PHP.DisallowShortOpenTag" />
 
     <rule ref="PEAR.ControlStructures.MultiLineCondition" />
     <rule ref="PEAR.Formatting.MultiLineAssignment" />
@@ -69,6 +73,30 @@
     <rule ref="SlevomatCodingStandard.PHP.TypeCast" />
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue" />
     <rule ref="SlevomatCodingStandard.Commenting.DeprecatedAnnotationDeclaration" />
+    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference" />
+    <rule ref="SlevomatCodingStandard.Variables.UnusedVariable" />
+    <rule ref="SlevomatCodingStandard.Variables.UselessVariable" />
+    <rule ref="SlevomatCodingStandard.Commenting.ForbiddenComments" />
+    <rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing">
+        <properties>
+            <property name="annotationsGroups" type="array">
+                <element value="
+                    @ORM\,
+                "/>
+                <element value="
+                    @var,
+                "/>
+                <element value="
+                    @param,
+                "/>
+                <element value="
+                    @return,
+                "/>
+            </property>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration" />
+    <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma" />
     <!-- end slevomat/coding-standard -->
 
 </ruleset>
