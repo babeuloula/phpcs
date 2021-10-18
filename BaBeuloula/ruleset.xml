@@ -84,7 +84,23 @@
                     @ORM\,
                 "/>
                 <element value="
+                    @SerializedName,
+                    @ApiResource,
+                    @ApiProperty,
+                    @ApiFilter,
+                    @Groups,
+                "/>
+                <element value="
+                    @Vich\,
+                "/>
+                <element value="
+                    @Assert\,
+                "/>
+                <element value="
                     @var,
+                "/>
+                <element value="
+                    @throw,
                 "/>
                 <element value="
                     @param,
