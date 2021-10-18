@@ -17,6 +17,7 @@ use PHP_CodeSniffer\{
  * Throw a warning if root-namespace functions does not have backslash before
  *
  * Ex: array_key_exists => \array_key_exists
+ *
  * @see https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php#L358-L398
  */
 class BackslashSniff implements Sniff
