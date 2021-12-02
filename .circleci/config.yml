@@ -75,6 +75,11 @@ executors:
             - image: php:8.0-cli-alpine
         working_directory: ~/repository
 
+    php8_1:
+        docker:
+            - image: php:8.1-cli-alpine
+        working_directory: ~/repository
+
 jobs:
     composer:
         executor: php7_1
@@ -116,6 +121,13 @@ jobs:
             - restore-composer-cache
             - phpcs
 
+    phpcs_8_1:
+        executor: php8_1
+        steps:
+            - checkout-alpine
+            - restore-composer-cache
+            - phpcs
+
 workflows:
     version: 2.1
     Code quality:
@@ -134,5 +146,8 @@ workflows:
                 requires:
                     - composer
             - phpcs_8_0:
+                requires:
+                    - composer
+            - phpcs_8_1:
                 requires:
                     - composer
