@@ -89,6 +89,7 @@
                     @ApiProperty,
                     @ApiFilter,
                     @Groups,
+                    @MaxDepth,
                 "/>
                 <element value="
                     @Vich\,
