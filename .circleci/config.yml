@@ -50,11 +50,6 @@ commands:
                 command: make phpcs
 
 executors:
-    php7_1:
-        docker:
-            - image: php:7.1-cli-alpine
-        working_directory: ~/repository
-
     php7_2:
         docker:
             - image: php:7.2-cli-alpine
@@ -82,16 +77,9 @@ executors:
 
 jobs:
     composer:
-        executor: php7_1
+        executor: php7_2
         steps:
             - store-composer-cache
-
-    phpcs_7_1:
-        executor: php7_1
-        steps:
-            - checkout-alpine
-            - restore-composer-cache
-            - phpcs
 
     phpcs_7_2:
         executor: php7_2
@@ -133,9 +121,6 @@ workflows:
     Code quality:
         jobs:
             - composer
-            - phpcs_7_1:
-                requires:
-                    - composer
             - phpcs_7_2:
                 requires:
                     - composer
