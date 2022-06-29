@@ -17,7 +17,6 @@ use PHP_CodeSniffer\{
 
 class FunctionCallSignatureSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
