@@ -2,7 +2,6 @@
 
 /**
  * @author BaBeuloula
- * Fork of https://github.com/steevanb/php-code-sniffs
  */
 
 declare(strict_types=1);
