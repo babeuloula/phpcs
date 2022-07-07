@@ -33,7 +33,7 @@ class ReadOnlySniff implements Sniff
         $next = $phpcsFile->getTokens()[$stackPtr + 2];
 
         if (true === \in_array($previous['type'], static::TOKEN_VISIBILITY, true)
-            && false === \in_array($next['type'], static::TOKEN_VISIBILITY, true)
+            || 'T_STRING' === $next['type']
         ) {
             return;
         }
