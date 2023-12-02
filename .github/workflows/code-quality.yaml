@@ -1,0 +1,67 @@
+name: Code quality
+
+on:
+    push:
+        branches:
+            - '**'
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    composer:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                version: [ 7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3 ]
+
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Cache composer dependencies
+                uses: actions/cache@v3
+                with:
+                    key: composer-${{ hashFiles('composer.json') }}-${{ hashFiles('composer.lock') }}-${{ matrix.version }}
+                    restore-keys: composer-
+                    path: vendor
+
+            -   name: Install composer dependencies
+                uses: php-actions/composer@v6
+                with:
+                    interaction: no
+                    dev: yes
+                    php_version: ${{ matrix.version }}
+                    version: 2
+                    args: --optimize-autoloader --no-scripts --ignore-platform-reqs
+
+    lint:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                version: [ 7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3 ]
+
+        needs: composer
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Cache composer dependencies
+                uses: actions/cache@v3
+                with:
+                    key: composer-${{ hashFiles('composer.json') }}-${{ hashFiles('composer.lock') }}-${{ matrix.version }}
+                    restore-keys: composer-
+                    path: vendor
+
+            -   name: Install PHP with extension
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.version }}
+
+            -   name: PHP Code Sniffer
+                run: make phpcs
