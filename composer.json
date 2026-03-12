@@ -3,7 +3,7 @@
     "description": "My own PHP code sniffs",
     "keywords": ["phpcs", "CodeSniffer", "Standard", "BaBeuloula"],
     "license": "MIT",
-    "type": "library",
+    "type": "phpcodesniffer-standard",
     "authors": [
         {
             "name": "BaBeuloula",
